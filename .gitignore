@@ -1,0 +1,4 @@
+02_cnn/models_cnn_vgg/*.h5
+04_interpretation/contributions_ensemble_cnn_model.pickle
+05_filter_motifs/results/last_layer_2_n_100/clustering_aug
+05_filter_motifs/results/last_layer_2_n_100/clustering_nonaug
