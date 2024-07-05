@@ -1,2 +1,0 @@
-data_length_subtracted/last_layer_2_n_100/motifs_aug.meme	abcd	meme
-

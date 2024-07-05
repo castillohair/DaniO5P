@@ -4,7 +4,7 @@ import re
 
 import numpy
 
-def one_hot_encode(sequences, max_seq_len=None, mask_val=-1, padding='left'):
+def one_hot_encode(sequences, max_seq_len=None, mask_val=0, padding='left'):
     # Dictionary returning one-hot encoding of nucleotides. 
     nuc_d = {'a':[1,0,0,0],
              'c':[0,1,0,0],
@@ -80,14 +80,16 @@ def load_meme(mofif_filepath):
                     ])
                 # MOTIF marks the start of the motif section
                 if line[:5]=='MOTIF':
-                    f.seek(f.tell() - len(line))
+                    # f.seek(f.tell() - len(line) - 1)
+                    readnewline = False
                     section = 'motifs'
 
             elif section == 'motifs':
-                line = f.readline()
+                if readnewline:
+                    line = f.readline()
                 if not line:
                     break
-                if line[:5]=='MOTIF':
+                elif line[:5]=='MOTIF':
                     # New motif
                     line_split = line.strip().split()
                     motif_id = line_split[1]
@@ -125,5 +127,44 @@ def load_meme(mofif_filepath):
                         # 'E': meta_E,
                     }
                     motifs[motif_id] = motif
+                    readnewline = True
+                elif line=='\n':
+                    readnewline = True
+                else:
+                    raise ValueError(f'Unexpected line {line}')
 
     return motifs
+
+
+# Save meme files
+meme_header = f"""MEME version 4
+
+ALPHABET= ACGU
+
+strands: +
+
+Background letter frequencies
+A 0.25 C 0.25 G 0.25 U 0.25
+
+"""
+
+def save_meme_from_dict(meme_dict, filepath, bg_freqs=[0.25, 0.25, 0.25, 0.25]):
+    meme_full_str = f"MEME version 4\n\n"
+    meme_full_str += f"ALPHABET= ACGU\n\n"
+    meme_full_str += f"strands: +\n\n"
+    meme_full_str += f"Background letter frequencies\n"
+    meme_full_str += f"A {bg_freqs[0]} C {bg_freqs[1]} G {bg_freqs[2]} U {bg_freqs[3]}\n\n"
+
+    for motif_id, motif_info in meme_dict.items():
+
+        meme_motif_full_str = ''
+        meme_motif_full_str += f"MOTIF {motif_id} {motif_info['name']}\n"
+        meme_motif_full_str += f"letter-probability matrix: alength= 4 w= {len(motif_info['ppm'])} nsites= {motif_info['nsites']}\n"
+        for pwm_row in motif_info['ppm']:
+            for pwm_val in pwm_row:
+                meme_motif_full_str += f'{pwm_val:.6f} '
+            meme_motif_full_str += '\n'
+        meme_full_str += meme_motif_full_str + '\n'
+
+    with open(filepath, 'w') as file: 
+        file.write(meme_full_str)

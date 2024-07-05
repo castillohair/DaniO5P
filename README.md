@@ -1,37 +1,49 @@
 # DaniO5P: Predicting 5'UTR-mediated translation during zebrafish embryogenesis
 
-This repository contains code to train, evaluate, and interpret the Danio Optimus 5-Prime (DaniO5P) model from the publication "[The regulatory landscape of 5′ UTRs in translational control during zebrafish embryogenesis](https://www.biorxiv.org/content/10.1101/2023.11.23.568470v1)".
+This repository contains code to train, evaluate, and interpret the Danio Optimus 5-Prime (DaniO5P) model from [Reimão-Pinto MM, Castillo-Hair SM, Seelig G, Schier A. *The regulatory landscape of 5′ UTRs in translational control during zebrafish embryogenesis.* bioRxiv 2023](https://www.biorxiv.org/content/10.1101/2023.11.23.568470v1).
 
-# Contents
+## Contents
+See Python scripts and Jupyter notebooks inside each folder for more details.
 
-- `00_data`: Data preprocessing. Computes mean ribosome loading (MRL) and differences in total RNA TPMs across timepoints, which are used later for model fitting.
-- `01_length_model`: Calculate and evaluate a model on MRL and TPM differences only based on 5'UTR length. Compute predictions and residuals (measurements - predictions) for all MPRA sequences.
-- `02_cnn`: Train and evaluate an ensemble of convolutional neural network (CNN) models to predict the residuals of MRL and TPM differences based on sequence.
-- `03_full_model_evaluation`: Compute performance metrics on the full DaniO5P (length + CNN) model, which are reported in the manuscript. In addition, notebook `evaluate_full_model.ipynb` computes full ensemble model predictions for all MPRA sequences, and can be used as a general example on how to use the full model.
-- `04_interpretation`: Use DeepSHAP (see below) to calculate how each nucleotide in all MPRA sequences contributes to MRL predictions. Generate nucleotide contribution plots.
-- `05_filter_motifs`: Extract motifs from the convolutional filters of the CNN models, cluster them, and calculate average motif contribution to MRL and TPM differences at each timepoint.
-- `utils`: Supporting code.
+### DaniO5P model
+- [`length_model`](length_model): Calculate and evaluate a model on Mean Ribosome Load (MRL) and estimated changes in abundance only based on 5'UTR length. Compute predictions and residuals (measurements - predictions) for all MPRA sequences.
+- [`cnn`](cnn): Train and evaluate an ensemble of convolutional neural network (CNN) models to predict the residuals of MRL and estimated changes in abundance based on sequence.
+- [`full_model_evaluation`](full_model_evaluation): Compute performance metrics on the full DaniO5P (length + CNN) model, which are reported in the manuscript.
+- [`rnn`](rnn): Train and evaluate an ensemble of recurrent neural network (RNN) models to predict the residuals of MRL and estimated changes in abundance based on sequence. The RNN models can theoretically make predictions on sequences longer than those in the MRPA (238nt), but their accuracy in such sequences has not been validated. See notes at the beginning of the notebook inside and use with caution.
 
-More details are available in each of the notebook and code files within each folder.
+### DaniO5P interpretation
+- [`contributions`](contributions): Calculate nucleotide contributions to MRL and abundance predictions, for every sequence in the MPRA. Generate nucleotide contribution plots.
+- [`motifs`](motifs): Extract motifs from the convolutional filters of the CNN models. Calculate average motif contributions to MRL and estimated changes in abundance at each timepoint, and relate these to motif position, secondary structure, etc.
 
-# Package requirements
+### DaniO5P basic tutorials
+TODO
+
+### Preprocessing and supporting code
+- [`preprocess_data`](preprocess_data): Data preprocessing. Computes MRL and estimated abundances from fraction TPMs, which are used for model training and analysis.
+- [`secondary_structure`](secondary_structure): Computes secondary structure metrics such as free energy and unpaired probabilities. These are used for motif analysis.
+- [`utils`](utils): Supporting code for sequence processing, model interpretation, and plotting.
+
+## Additional data
+
+Some files are too big to be included in this repository. The following must be downloaded separately:
+
+- Trained model weights: [TODO: add URL when available]
+- Calculated contribution scores for all MPRA sequences: [TODO: add URL when available]
+- Secondary structure calculation results: [TODO: add URL when available]
+
+## Requirements
 All of the code here was run in Python 3.9 with the following package version:
 - `matplotlib` 3.5.1
-- `numpy` 1.22.1
+- `numpy` 1.26.4
 - `pandas` 1.4.3
-- `scipy` 1.7.3
-- `seaborn` 0.12.2
+- `scipy` 1.12.0
+- `seaborn` 0.13.2
 - `logomaker` 0.8
+- `tensorflow` 2.7
+- `nupack` 4.0.1.1 (for secondary structure calculations)
+- `prtpy` 0.8.2 (to compute chromosome-based data splits)
 
-Most of the deep learning code here was run in `tensorflow` 2.4. The only exception is `04_interpretation/run_interpretation_in_avg_model.py`, which requires `tensorflow` 1.15 instead.
+Other necessary software includes:
+- The DeepSHAP version at https://github.com/castillohair/shap/tree/castillohair/genomics_mod commit # f77513e2e05eb63f4d3b17ec9f9d3569c930ad02 for the code in `contributions`. Adapted from the [Kundaje lab fork](https://github.com/kundajelab/shap) to work with tensorflow 2.
+- A modified version of `matrix-clustering` at https://github.com/castillohair/matrix-clustering_stand-alone, original from https://github.com/jaimicore/matrix-clustering_stand-alone, for the code in `motifs`.
 
-Other software used includes:
-- The DeepSHAP version at https://github.com/kundajelab/shap commit # 29d2ffab405619340419fc848de6b53e2ef0f00c for the code in `04_interpretation`.
-- A modified version of `matrix-clustering` at https://github.com/castillohair/matrix-clustering_stand-alone, original from https://github.com/jaimicore/matrix-clustering_stand-alone, for the code in `05_filter_motifs`.
-
-# Other requirements
-
-The following files must be downloaded separately:
-
-- Trained tensorflow models can be downloaded from [TODO: add URL when available]
-- Calculated contribution scores for all MPRA sequences can be downloaded from [TODO: add URL when available]
