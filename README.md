@@ -5,18 +5,23 @@ This repository contains code to train, evaluate, and interpret the Danio Optimu
 ## Contents
 See Python scripts and Jupyter notebooks inside each folder for more details.
 
-### DaniO5P model
+### DaniO5P examples
+- [`example_DaniO5P.ipynb`](example_DaniO5P.ipynb): Example jupyter notebook on how to use DaniO5P to make predictions on an arbitrary 5'UTR sequence.
+- [`example_plot_contributions.ipynb`](example_plot_contributions.ipynb): Example jupyter notebook on how to plot precomputed predictions and contribution scores for any sequence in the MPRA.
+
+### DaniO5P model training
 - [`length_model`](length_model): Calculate and evaluate a model on Mean Ribosome Load (MRL) and estimated changes in abundance only based on 5'UTR length. Compute predictions and residuals (measurements - predictions) for all MPRA sequences.
 - [`cnn`](cnn): Train and evaluate an ensemble of convolutional neural network (CNN) models to predict the residuals of MRL and estimated changes in abundance based on sequence.
 - [`full_model_evaluation`](full_model_evaluation): Compute performance metrics on the full DaniO5P (length + CNN) model, which are reported in the manuscript.
-- [`rnn`](rnn): Train and evaluate an ensemble of recurrent neural network (RNN) models to predict the residuals of MRL and estimated changes in abundance based on sequence. The RNN models can theoretically make predictions on sequences longer than those in the MRPA (238nt), but their accuracy in such sequences has not been validated. See notes at the beginning of the notebook inside and use with caution.
 
 ### DaniO5P interpretation
-- [`contributions`](contributions): Calculate nucleotide contributions to MRL and abundance predictions, for every sequence in the MPRA. Generate nucleotide contribution plots.
+- [`contributions`](contributions): Calculate nucleotide contributions to MRL and abundance predictions, for every sequence in the MPRA. Generate nucleotide contribution plots for the paper figures.
 - [`motifs`](motifs): Extract motifs from the convolutional filters of the CNN models. Calculate average motif contributions to MRL and estimated changes in abundance at each timepoint, and relate these to motif position, secondary structure, etc.
 
-### DaniO5P basic tutorials
-TODO
+### DaniO5P-RNN (experimental)
+DaniO5P-RNN can theoretically make predictions on sequences longer than those in the MRPA (238nt), but their accuracy in such sequences has not been validated. See notes at the beginning of the relevant notebooks and use with caution.
+- [`example_DaniO5P_RNN.ipynb`](example_DaniO5P_RNN.ipynb): Example jupyter notebook on how to use DaniO5P-RNN to make predictions on an arbitrary 5'UTR sequence.
+- [`rnn`](rnn): Train and evaluate the ensemble of recurrent neural network (RNN) models underlying DaniO5P-RNN.
 
 ### Preprocessing and supporting code
 - [`preprocess_data`](preprocess_data): Data preprocessing. Computes MRL and estimated abundances from fraction TPMs, which are used for model training and analysis.
