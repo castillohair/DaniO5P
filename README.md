@@ -1,5 +1,7 @@
 # DaniO5P: Predicting 5'UTR-mediated translation during zebrafish embryogenesis
 
+![plot](./header.png)
+
 This repository contains code to train, evaluate, and interpret the Danio Optimus 5-Prime (DaniO5P) model from [Reimão-Pinto MM, Castillo-Hair SM, Seelig G, Schier A. *The regulatory landscape of 5′ UTRs in translational control during zebrafish embryogenesis.* bioRxiv 2023](https://www.biorxiv.org/content/10.1101/2023.11.23.568470v1).
 
 ## Contents
@@ -17,11 +19,6 @@ See Python scripts and Jupyter notebooks inside each folder for more details.
 ### DaniO5P interpretation
 - [`contributions`](contributions): Calculate nucleotide contributions to MRL and abundance predictions, for every sequence in the MPRA. Generate nucleotide contribution plots for the paper figures.
 - [`motifs`](motifs): Extract motifs from the convolutional filters of the CNN models. Calculate average motif contributions to MRL and estimated changes in abundance at each timepoint, and relate these to motif position, secondary structure, etc.
-
-### DaniO5P-RNN (experimental)
-DaniO5P-RNN can theoretically make predictions on sequences longer than those in the MRPA (238nt), but their accuracy in such sequences has not been validated. See notes at the beginning of the relevant notebooks and use with caution.
-- [`example_DaniO5P_RNN.ipynb`](example_DaniO5P_RNN.ipynb): Example jupyter notebook on how to use DaniO5P-RNN to make predictions on an arbitrary 5'UTR sequence.
-- [`rnn`](rnn): Train and evaluate the ensemble of recurrent neural network (RNN) models underlying DaniO5P-RNN.
 
 ### Preprocessing and supporting code
 - [`preprocess_data`](preprocess_data): Data preprocessing. Computes MRL and estimated abundances from fraction TPMs, which are used for model training and analysis.
