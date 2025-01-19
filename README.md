@@ -2,7 +2,7 @@
 
 ![plot](./header.png)
 
-This repository contains code to train, evaluate, and interpret the Danio Optimus 5-Prime (DaniO5P) model from [Reimão-Pinto MM, Castillo-Hair SM, Seelig G, Schier A. *The regulatory landscape of 5′ UTRs in translational control during zebrafish embryogenesis.* bioRxiv 2023](https://www.biorxiv.org/content/10.1101/2023.11.23.568470v1).
+This repository contains code to train, evaluate, and interpret the Danio Optimus 5-Prime (DaniO5P) model from [Reimão-Pinto MM, Castillo-Hair SM, Seelig G, Schier A. *The regulatory landscape of 5′ UTRs in translational control during zebrafish embryogenesis.* Dev. Cell. (2025)](https://doi.org/10.1016/j.devcel.2024.12.038).
 
 ## Contents
 See Python scripts and Jupyter notebooks inside each folder for more details.
@@ -29,9 +29,16 @@ See Python scripts and Jupyter notebooks inside each folder for more details.
 
 Some files are too big to be included in this repository. The following must be downloaded separately:
 
-- Trained model weights: [TODO: add URL when available]
-- Calculated contribution scores for all MPRA sequences: [TODO: add URL when available]
-- Secondary structure calculation results: [TODO: add URL when available]
+- Trained model weights:
+  - Create a folder named `models_cnn_vgg` inside the `cnn` folder of this repo.
+  - Download all .h5 files from the `cnn_weights` folder at https://doi.org/10.17632/rf98wbhzgf.1.
+  - Move all downloaded .h5 files to the newly created `models_cnn_vgg` folder.
+- Calculated contribution scores for all MPRA sequences:
+  - Download file `contributions_ensemble_cnn_model.pickle` from the `contributions` folder at https://doi.org/10.17632/rf98wbhzgf.1.
+  - Move this file to the `contributions` folder in this repo.
+- Secondary structure calculation results:
+  - Download file `stucture_results_28C.pickle` from the `secondary_structure` folder at https://doi.org/10.17632/rf98wbhzgf.1.
+  - Move this file to the `secondary_structures` folder in this repo.
 
 ## Requirements
 All of the code here was run in Python 3.9 with the following package version:
